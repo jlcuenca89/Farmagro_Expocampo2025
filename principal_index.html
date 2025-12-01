@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Farmagro_Expocampo-2025</title>
+    <link rel="icon" href="img/farmagro_icon.png" type="image/png">
+  <style>
+    html, body { height: 100%; margin: 0; }
+    body {
+      background-image: url('img/portada.png');
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-color: #000;
+    }
+    /* full-screen clickable area */
+    a.full-cover {
+      position: fixed;
+      inset: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      text-decoration: none;
+      outline: none;
+      cursor: pointer;
+    }
+    a.full-cover:focus { box-shadow: inset 0 0 0 3px rgba(255,255,255,0.25); }
+  </style>
+</head>
+<body>
+  <a href="menu.html" class="full-cover" role="button" aria-label="Ir al menú"></a>
+</body>
+</html>

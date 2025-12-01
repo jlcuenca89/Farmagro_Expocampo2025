@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Farmagro_Expocampo-2025</title>
+    <link rel="icon" href="img/farmagro_icon.png" type="image/png">
+    <link rel="stylesheet" href="css/main_styles.css">
+    <style>
+        /* Asegurar que el contenedor del modal permita posicionar el botón */
+        .modal .modal-content { position: relative; }
+
+        /* Botón para salir de pantalla completa (esquina superior derecha) */
+        .exit-fullscreen {
+            position: absolute;
+            top: 60px;
+            right: 90px;
+            z-index: 1001;
+            background: rgba(0,0,0,0.6);
+            color: #fff;
+            border: none;
+            padding: 8px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 44px;
+            display: none; /* se muestra sólo en fullscreen */
+        }
+        .exit-fullscreen:focus { outline: 2px solid #fff; }
+    </style>
+</head>
+<body>
+    
+    <div class="main-container">
+        <div class="panel panel-left" role="button" tabindex="0" aria-label="Visión" data-link="principal_index.html">
+        </div>
+        <div class="panel panel-center" role="button" tabindex="0" aria-label="Futuro">
+        </div>
+        <div class="panel panel-right" role="button" tabindex="0" aria-label="Diseño" data-link="index.html">
+        </div>
+    </div>
+
+    <!-- Video Modal -->
+    <div id="videoModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <div class="video-wrapper">
+                <video id="mainVideo" controls>
+                    <source src="img/ricetec_video.mp4" type="video/mp4">
+                    Tu navegador no soporta el elemento de video.
+                </video>
+            </div>
+            <button id="exitFullBtn" class="exit-fullscreen" aria-label="Salir de pantalla completa">✕</button>
+        </div>
+    </div>
+
+    <!-- Fullscreen logic moved to js/main_js.js -->
+
+    <script type="module" src="js/main_js.js"></script>
+</body>
+</html>
+

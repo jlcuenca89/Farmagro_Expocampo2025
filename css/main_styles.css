@@ -1,0 +1,269 @@
+:root {
+    --bg-image: url('../img/hero-fondoricetec.png');
+    --gap-size: 2px; /* Separación inicial para la animación */
+    --transition-speed: 1.5s;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    background-color: #050505;
+    font-family: 'Courier New', Courier, monospace;
+    color: white;
+}
+
+.main-container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    /* Empezamos con huecos entre paneles */
+    gap: var(--gap-size); 
+    padding: var(--gap-size);
+    transition: gap var(--transition-speed) cubic-bezier(0.22, 1, 0.36, 1), padding var(--transition-speed) cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Clase para el estado "armado" */
+.main-container.assembled {
+    gap: 0;
+    padding: 0;
+}
+
+.panel {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-speed) ease;
+    
+    /* Make panels interactive */
+    cursor: pointer;
+    
+    /* Borde sutil inicial */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+}
+
+.panel:hover {
+    flex-grow: 1.2; /* Subtle expansion on hover */
+    z-index: 10;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+}
+
+/* Accessibility: focus and active styles so panels behave like buttons */
+.panel:focus {
+    outline: 3px solid rgba(0, 255, 255, 0.25);
+    outline-offset: 6px;
+    z-index: 11;
+}
+
+.panel:active {
+    transform: translateY(2px);
+}
+
+.main-container.assembled .panel {
+    border: 0px solid transparent;
+    border-radius: 0px;
+}
+/* Disable expansion when assembled to maintain the image integrity, or keep it subtle */
+.main-container.assembled .panel:hover {
+    flex-grow: 1; 
+    z-index: 1;
+    box-shadow: none;
+}
+
+/* Lógica del Fondo */
+.panel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: var(--bg-image);
+    background-repeat: no-repeat;
+    
+    /* CLAVE: La imagen debe cubrir todo el viewport (100vw 100vh) 
+       independientemente del tamaño del panel individual */
+    background-size: 100vw 100vh; 
+    
+    /* Filtro inicial para dar ambiente */
+    filter: brightness(0.6) grayscale(0.3);
+    transition: filter var(--transition-speed) ease, background-position var(--transition-speed) ease;
+    z-index: -1;
+}
+
+/* Highlight effect when acting as a button */
+.panel:hover::before {
+    filter: brightness(1) grayscale(0);
+}
+
+.main-container.assembled .panel::before {
+    filter: brightness(1) grayscale(0);
+}
+
+/* Extra highlight when assembled and hovered */
+.main-container.assembled .panel:hover::before {
+    filter: brightness(1.2);
+}
+
+/* Posicionamiento del fondo para cada panel (Desktop: Columnas) */
+.panel-left::before {
+    background-position: 0% 50%; 
+    /* El panel izquierdo muestra el lado izquierdo (0%) de la imagen total */
+}
+
+.panel-center::before {
+    background-position: 50% 50%;
+    /* El centro muestra el centro */
+}
+
+.panel-right::before {
+    background-position: 100% 50%;
+    /* El derecho muestra el final */
+}
+
+/* Contenido de texto */
+.content {
+    z-index: 1;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1s 0.5s, transform 1s 0.5s;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+    background: rgba(0,0,0,0.3);
+    padding: 1rem;
+    backdrop-filter: blur(2px);
+    pointer-events: none; /* Allows clicks to pass through text to the panel */
+}
+
+.main-container.assembled .content {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* --- MODAL STYLES --- */
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1000; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgba(0,0,0,0.9); 
+    backdrop-filter: blur(5px);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal.show {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+}
+
+.modal-content {
+    position: relative;
+    width: 90%;
+    max-width: 1000px;
+    background-color: #000;
+    border: 1px solid #333;
+    box-shadow: 0 0 50px rgba(0, 255, 255, 0.1);
+    border-radius: 4px;
+    animation: modalOpen 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes modalOpen {
+    from { transform: scale(0.8) translateY(50px); opacity: 0; }
+    to { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+.close-button {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    color: #f1f1f1;
+    font-size: 35px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.2s;
+    z-index: 1001;
+    line-height: 1;
+}
+
+.close-button:hover {
+    color: #00ffff;
+    text-shadow: 0 0 10px #00ffff;
+}
+
+.video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    height: 0;
+    width: 100%;
+    background: #000;
+}
+
+.video-wrapper video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    outline: none;
+}
+
+h1 {
+    font-size: 3rem;
+    letter-spacing: 5px;
+    margin-bottom: 1rem;
+}
+
+h2 {
+    font-size: 1.2rem;
+    letter-spacing: 3px;
+    font-weight: 300;
+}
+
+/* --- RESPONSIVE (Móvil) --- */
+@media (max-width: 768px) {
+    .main-container {
+        flex-direction: column; /* Cambiamos a filas apiladas */
+    }
+
+    /* Ajustamos las posiciones del fondo para vertical */
+    .panel-left::before {
+        background-position: 50% 0%; /* Arriba */
+    }
+
+    .panel-center::before {
+        background-position: 50% 50%; /* Centro */
+    }
+
+    .panel-right::before {
+        background-position: 50% 100%; /* Abajo */
+    }
+    
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1rem; }
+}
+
+/* Background override for `menu.html`.
+   Add `class="menu-page"` to the <body> tag in `menu.html` so this rule applies.
+   Example: <body class="menu-page">
+   Ensure `menu-portada.png` is placed in the project's `img/` folder (same level as `css/`). */
+body.menu-page .panel::before {
+    background-image: url('../img/hero-fondoricetec.png');
+    background-position: 50% 50%;
+}
